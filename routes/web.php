@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlumnoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/alumnos', [AlumnoController::class, '__invoke'])->name('alumno.invoke'); // Vista de todos los registros de la tabla alumno
+Route::get('/alumno', [AlumnoController::class, 'index'])->name('alumno'); // Vista del filtrado de alumnos
+Route::post('/regitro-alumno', [AlumnoController::class, 'create'])->name('alumno.create'); // Lógica para almacenar un nuevo registro
+Route::put('/modificar-alumno/{id}', [AlumnoController::class, 'update'])->name('alumno.update'); // Lógica para modificar un registro existente
+Route::delete('/eliminar-alumno/{id}', [AlumnoController::class, 'delete'])->name('alumno.delete'); // Lógica para eliminar un registro existente
