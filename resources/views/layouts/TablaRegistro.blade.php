@@ -1,90 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Registro Alumnos</title>
-</head>
-
-
-
-<style type="text/css">
-
-
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: sans-serif;
-    }
-
-    body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: linear-gradient(to right, #cdb4db, #a2d2ff);
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        background: #fff;
-        text-align: center;
-        padding: 20px 25px;
-        box-shadow: 0 5px 10px rgba(71, 3, 6, 0.7);
-    }
-
-    form .title {
-        color: #252525;
-        font-size: 35px;
-        font-weight: 800;
-        margin-bottom: 30px;
-    }
-
-    form label {
-        margin-bottom: 35px;
-    }
-
-    form label .fa-solid {
-        font-size: 20px;
-        color: #cb232c;
-        margin-right: 10px;
-    }
-
-    form label input {
-        outline: none;
-        border: none;
-        color: #252525;
-        border-bottom: solid 1px #ce1d61;
-        padding: 0 5px;
-        font-size: 18px;
-    }
-
-    form label input::placeholder {
-        color: rgba(37, 37, 37, 0.5);
-    }
-
-
-    form .link {
-        color: #252525;
-        margin-bottom: 15px;
-    }
-
-    form button {
-        color: #fff;
-        border: none;
-        background: linear-gradient(to right, #cb232c, #ce1d61);
-        padding: 10px 15px;
-        cursor: pointer;
-        font-size: 20px;
-    }
-
-
-</style>
-
-<body>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -125,38 +38,70 @@
 <body>
 <h1 class="text-center p-3">Registro Alumnos</h1>
 @if(session("correcto"))
-    <div class="alert alert-success">{{session("correcto")}}</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '{{ session("correcto") }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        });
+    </script>
 @endif
 
 @if(session("incorrecto"))
-    <div class="alert alert-danger">{{session("incorrecto")}}</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '{{ session("incorrecto") }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        });
+    </script>
 @endif
+
+<div class="d-md-flex justify-content-md-end me-5">
+    <form action="{{ route('alumno') }}" method="GET">
+        <div class="btn-group">
+            <input type="text" name="busqueda" class="form-control" placeholder="Código o Nombre">
+            <input type="submit" value="Buscar" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+
 <div class="p-5 table-responsive">
     <!-- Modal de registrar-->
     <div class="modal fade" id="modalRegistrar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar Catedrático</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar Alumno</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{route('alumno.create')}}" method="POST">
                         @csrf
                         <div class="form-group row mb-3">
-                  
+                            <label class="col-sm-5 col-form-label">Código Alumno</label>
+                            <div class="col-sm-7">
+                                <input type="number" name="Carne" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row mb-3">
                             <label class="col-sm-5 col-form-label">Nombre</label>
                             <div class="col-sm-7">
-                                <input type="text" name="Nombre" class="form-control">
+                                <input type="text" name="Nombre_Alumno" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row mb-3">
                             <label class="col-sm-5 col-form-label">Correo</label>
                             <div class="col-sm-7">
-                                <input type="email" name="Correo" class="form-control">
+                                <input type="email" name="Correo_institucional" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row mb-3">
@@ -165,6 +110,7 @@
                                 <input type="number" name="Telefono" class="form-control">
                             </div>
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Registrar</button>
@@ -182,34 +128,39 @@
     <table class="table table-striped table-bordered table-hover">
         <thead class="bg-primary text-white">
         <tr>
-            <th class="align-middle">Código Registro</th>
-            <th class="align-middle">Nombre Alumno</th>
-            <th class="align-middle">Correo Institucional</th>
+            <th class="align-middle">Código Alumno</th>
+            <th class="align-middle">Nombre</th>
+            <th class="align-middle">Correo</th>
             <th class="align-middle">Teléfono</th>
-
+            <th class="align-middle">Opciones</th>
         </tr>
         </thead>
         <tbody class="table-group-divider">
-        @foreach($alumnos as $Alumno)
+        @foreach($alumnos as $alumno)
             <tr>
-                <td>{{$Alumno->Carne}}</td>
-                <td>{{$Alumno->Nombre_Alumno}}</td>
-                <td>{{$Alumno->Correo_institucional}}</td>
-                <td>{{$Alumno->Telefono}}</td>
+                <td>{{$alumno->Carne}}</td>
+                <td>{{$alumno->Nombre_Alumno}}</td>
+                <td>{{$alumno->Correo_institucional}}</td>
+                <td>{{$alumno->Telefono}}</td>
 
                 <td>
                     <a href="" class="btn btn-warning"
-                       data-bs-toggle="modal" data-bs-target="#modalEditar{{$Alumno->Carne}}">
+                       data-bs-toggle="modal" data-bs-target="#modalEditar{{$alumno->Carne}}">
                         <i class='bx bxs-edit'></i>
                     </a>
                     <!-- Formulario de Eliminar -->
-                    <form> action="{{ route('$Alumno.delete', $Alumno->Nombre_Alumno) }}" method="POST"
-
+                    <form action="{{ route('alumno.delete', $alumno->Carne) }}" method="POST"
+                          style="display:inline;" class="d-inline delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">
+                            <i class='bx bxs-trash-alt'></i>
+                        </button>
                     </form>
                 </td>
 
                 <!-- Modal de editar -->
-                <div class="modal fade" id="modalEditar{{$Alumno->Correo_institucional}}" tabindex="-1"
+                <div class="modal fade" id="modalEditar{{$alumno->Carne}}" tabindex="-1"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -219,7 +170,7 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ route('$Alumno.update', $Alumno->Carne) }}"
+                                <form action="{{ route('alumno.update', $alumno->Carne) }}"
                                       method="POST">
                                     @csrf
                                     @method('PUT')
@@ -227,35 +178,34 @@
                                     <div class="form-group row mb-3">
                                         <label class="col-sm-5 col-form-label">Código Alumno</label>
                                         <div class="col-sm-7">
-                                            <input type="number" name="Codigo_Catedratico" class="form-control"
-                                                   value="{{$Alumno->Carne}}">
+                                            <input type="number" name="Carne" class="form-control"
+                                                   value="{{$alumno->Codigo_Alumno}}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-3">
                                         <label class="col-sm-5 col-form-label">Nombre</label>
                                         <div class="col-sm-7">
-                                            <input type="text" name="Nombre" class="form-control"
-                                                   value="{{$Alumno->Nombre_Alumno}}">
+                                            <input type="text" name="Nombre_Alumno" class="form-control"
+                                                   value="{{$alumno->Nombre}}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-3">
                                         <label class="col-sm-5 col-form-label">Correo</label>
                                         <div class="col-sm-7">
-                                            <input type="email" name="Correo" class="form-control"
-                                                   value="{{$Alumno->Correo_institucional}}">
+                                            <input type="email" name="Correo_institucional" class="form-control"
+                                                   value="{{$alumno->Correo}}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-3">
                                         <label class="col-sm-5 col-form-label">Telefono</label>
                                         <div class="col-sm-7">
                                             <input type="number" name="Telefono" class="form-control"
-                                                   value="{{$Alumno->Telefono}}">
+                                                   value="{{$alumno->Telefono}}">
                                         </div>
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar
-                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                         <button type="submit" class="btn btn-primary">Modificar</button>
                                     </div>
                                 </form>
@@ -267,7 +217,11 @@
         @endforeach
         </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+        {{ $alumnos->appends(request()->input())->links() }}
+    </div>
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var deleteForms = document.querySelectorAll('.delete-form');
@@ -281,10 +235,6 @@
         });
     });
 </script>
-
-
-</body>
-</html>
 
 
 </body>
